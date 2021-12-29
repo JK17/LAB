@@ -9,20 +9,26 @@ boxsize=40.0
 temp=2.5
 
 box = Box(boxsize, particleNumber, temp)
+box.initial_velocity()
 
 tmax = 5
 t=0
-dt=0.001
+dt= box.particles[0].get_dt
 
 for t in np.arange(0, tmax, dt):
-    for p in box.particles:
+    for p_i in box.particles:
         # compute acting force on every particle
         f = 0
         for p_j in box.particles:
-            if p != p_j:
-                force = p.force(p_j.position)
+            if p_i != p_j:
+                force = p_i.force(p_j.position)
                 f += force
-        p.force_res = f
+        p_i.force_res = f
+
+    #compute velocity in next dt/2
+    for p_i in box.particles:
+        p_i.velocity_plus_dt_2()
+
 
         #compute 
 #rysowanie poczatkowego polozenia czastek
